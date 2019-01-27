@@ -11,7 +11,7 @@ namespace LyokoAPP_Plugin
 {
     public class Main : LyokoAPIPlugin
     {
-        public override string Name { get; } = "LyokoAPP";
+        public override string Name { get; } = "LyokoAPP_Plugin";
         public override string Author { get; } = "KaruzoHikari";
         private static string _token = "";
         
@@ -63,7 +63,7 @@ namespace LyokoAPP_Plugin
                 catch (Exception e)
                 {
                     LyokoLogger.Log(Name,
-                        "Something went wrong when reading the token! Please check that you have input it in ");
+                        "Something went wrong when reading the token! Please check that only your token is inside UserToken.txt");
                     return false;
                 }
             }
