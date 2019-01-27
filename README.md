@@ -17,7 +17,7 @@ How to use:
 1. Download the APK and install it in your phone (don't worry, it's safe. You can check the code in here. It's not in the Play Store mainly because of the registration fee).
 
 2. Place the plugin under the plugins folder. In IFSCL, it's in:  
-```\Program Files\CodeLyokoGames\Kolossus Launcher\App\IFSCL\IFSCL_data\StreamingAssets\LyokoAPI_UserFile~```
+```\Program Files\CodeLyokoGames\Kolossus Launcher\app\IFSCL\IFSCL_Data\StreamingAssets\LyokoAPI_UserFile~```
 
 3. Start the computer game (in this case, IFSCL). The plugin will then be initialize, create a folder in the plugins folder (it'll be called LyokoAPP, in the plugin's location) and disable itself. Once the folder is there, you can close the game.
 
