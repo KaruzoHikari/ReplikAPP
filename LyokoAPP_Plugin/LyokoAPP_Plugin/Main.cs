@@ -67,9 +67,17 @@ namespace LyokoAPP_Plugin
                     return false;
                 }
             }
-
-            Directory.CreateDirectory(directory);
-            File.Create(fileDirectory);
+            try
+            {
+                Directory.CreateDirectory(directory);
+                File.Create(fileDirectory);
+            }
+            catch (Exception e)
+            {
+                LyokoLogger.Log(Name,$"Something went wrong creating the config directory: {e.Message}, check if you have write access to the directory");
+                return false;
+            }
+            
             LyokoLogger.Log(Name, @"Please input the token given by LyokoAPP in UserToken.txt (in LyokoAPP's folder)");
             return false;
         }
