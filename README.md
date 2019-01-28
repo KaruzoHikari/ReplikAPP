@@ -19,7 +19,7 @@ How to use:
 2. Place the plugin under the plugins folder. In IFSCL, it's in:  
 ```\Program Files\CodeLyokoGames\Kolossus Launcher\app\IFSCL\IFSCL_Data\StreamingAssets\LyokoAPI_UserFile~```
 
-3. Start the computer game (in this case, IFSCL). The plugin will then be initialize, create a folder in the plugins folder (it'll be called LyokoAPP, in the plugin's location) and disable itself. Once the folder is there, you can close the game.
+3. Start the computer game (in this case, IFSCL), and go to the main menu. The plugin will then be initialize, create a folder in the plugins folder (it'll be called LyokoAPP, in the plugin's location) and disable itself. Once the folder is there, you can close the game. *(Note: If you're sure that the plugin is in the right location, but no folder is created, run IFSCL as Administrator)*.
 
 4. In your phone, open the app. It'll generate your device token. This token will only change if you uninstall the app, updating or restarting the app won't change it. ***Keep in mind that with this token you'll be able to send notifications to yourself, but other people would be able to do it too. Do not share it around.***
 
