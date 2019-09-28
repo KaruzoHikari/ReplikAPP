@@ -21,6 +21,8 @@ namespace LyokoAPP_Plugin
             {
                 return false;
             }
+
+            EnableDLL();
             Listener.StartListening();
             return true;
         }
@@ -39,6 +41,30 @@ namespace LyokoAPP_Plugin
         public override void OnGameEnd(bool failed)
         {
             //nothing again Jack why do you make us fill these methods
+        }
+
+        public override void OnInterfaceExit()
+        {
+            //nothing
+        }
+        
+        public override void OnInterfaceEnter()
+        {
+            //nothing
+        }
+
+        private void EnableDLL()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                String resourceName = "LyokoAPP_Plugin." + new AssemblyName(args.Name).Name + ".dll";
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                {
+                    Byte[] assemblyData = new Byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    return Assembly.Load(assemblyData);
+                }
+            };
         }
 
         private bool ReadToken()
