@@ -1,4 +1,3 @@
-using System.Media;
 using LyokoAPI.Events;
 using LyokoAPI.VirtualStructures;
 using LyokoAPI.VirtualStructures.Interfaces;
@@ -36,7 +35,7 @@ namespace LyokoAPP_Plugin
             string title = "A tower has been activated!";
             string body = "Tower nº" + tower.Number + " in the " + Main.GetUppercaseNames(tower.Sector.Name) + "!";
             FireBasePush.SendMessage(title, body);
-            DataPush.SendData(tower);
+            //DataPush.SendData(tower);
         }
 
         private static void OnTowerDeactivation(ITower tower)
@@ -44,7 +43,6 @@ namespace LyokoAPP_Plugin
             string title = "Good job! Tower deactivated!";
             string body = "Tower nº" + tower.Number + " in the " + Main.GetUppercaseNames(tower.Sector.Name) + ".";
             FireBasePush.SendMessage(title, body);
-            DataPush.SendData(tower);
         }
 
         private static void OnTowerHijack(ITower tower, APIActivator oldActivator, APIActivator newActivator)

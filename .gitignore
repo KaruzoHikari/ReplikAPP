@@ -6,3 +6,5 @@ LyokoAPP_Plugin/LyokoAPP_Plugin.sln
 LyokoAPP_Plugin/LyokoAPP_Plugin.sln.DotSettings.user
 LyokoAPP_Plugin/LyokoAPP_Plugin/LyokoAPP_Plugin.csproj
 LyokoAPP_Plugin/LyokoAPP_Plugin/Properties
+LyokoAPP_Plugin/packages
+**/.DS_Store

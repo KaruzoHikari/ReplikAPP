@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Net.Mime;
 using System.Reflection;
 using System.Text;
-using System.Xml;
 using LyokoAPI.Events;
 using LyokoAPI.Plugin;
 
@@ -11,8 +9,8 @@ namespace LyokoAPP_Plugin
 {
     public class Main : LyokoAPIPlugin
     {
-        public override string Name { get; } = "LyokoAPP_Plugin";
-        public override string Author { get; } = "KaruzoHikari";
+        public override string Name { get; } = "LyokoAPP";
+        public override string Author { get; } = "KaruzoHikari and Appryl";
         private static string _token = "";
         
         protected override bool OnEnable()
@@ -43,16 +41,6 @@ namespace LyokoAPP_Plugin
             //nothing again Jack why do you make us fill these methods
         }
 
-        public override void OnInterfaceExit()
-        {
-            //nothing
-        }
-        
-        public override void OnInterfaceEnter()
-        {
-            //nothing
-        }
-
         private void EnableDLL()
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
@@ -60,10 +48,15 @@ namespace LyokoAPP_Plugin
                 String resourceName = "LyokoAPP_Plugin." + new AssemblyName(args.Name).Name + ".dll";
                 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
                 {
-                    Byte[] assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
+                    if (stream != null)
+                    {
+                        Byte[] assemblyData = new Byte[stream.Length];
+                        stream.Read(assemblyData, 0, assemblyData.Length);
+                        return Assembly.Load(assemblyData);
+                    }
                 }
+
+                return null;
             };
         }
 
@@ -118,6 +111,10 @@ namespace LyokoAPP_Plugin
             if (name.Length < 1 || name.Equals("XANA", StringComparison.OrdinalIgnoreCase))
             {
                 return name;
+            }
+            if (name.Equals("carthage", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Sector 5";
             }
 
             return char.ToUpperInvariant(name[0]) + name.Substring(1).ToLowerInvariant();

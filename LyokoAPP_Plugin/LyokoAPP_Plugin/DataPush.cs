@@ -1,9 +1,7 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using LyokoAPI.Events;
-using Newtonsoft.Json;
 using LyokoAPI.VirtualStructures.Interfaces;
 using LyokoAPI.VirtualStructures;
 
@@ -28,33 +26,15 @@ namespace LyokoAPP_Plugin
                 httpWebRequest.ContentType = "application/json; charset=utf-8";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
-                    CultureInfo ci = CultureInfo.InstalledUICulture;
-                    var sName = tower.Sector.Name;
-                    FirstLetterToUpperCaseOrConvertNullToEmptyString(sName);
-                    if (ci.TwoLetterISOLanguageName == "fr")
-                    {
-                        if (sName == "forest")
-                        {
-                            sName = "Forêt";
-                        } else if (sName == "ice")
-                        {
-                            sName = "Banquise";
-                        } else if (sName == "mountain")
-                        {
-                            sName = "Montagne";
-                        } else if (sName == "desert")
-                        {
-                            sName = "Désert";
-                        }
-                    }
+                    var sName = Main.GetUppercaseNames(tower.Sector.Name);
                     var data = new
                     {
                         sector = sName,
                         number = tower.Number.ToString(),
                         activator = Enum.GetName(typeof(APIActivator), tower.Activator)
                     };
-                    var json = JsonConvert.SerializeObject(data);
-                    streamWriter.Write(json);
+                    //var json = JsonConvert.SerializeObject(data);
+                    //streamWriter.Write(json);
                     streamWriter.Flush();
                 }
 
@@ -66,23 +46,11 @@ namespace LyokoAPP_Plugin
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LyokoLogger.Log("LYOKOAPP", ex.ToString());
+                LyokoLogger.Log("LyokoAPP", e.ToString());
                 return "SomethingWrong";
             }
         }
-        
-        
-        public static string FirstLetterToUpperCaseOrConvertNullToEmptyString(this string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return string.Empty;
-
-            char[] a = s.ToCharArray();
-            a[0] = char.ToUpper(a[0]);
-            return new string(a);
-        }
-        
     }
 }

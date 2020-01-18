@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Net;
 using LyokoAPI.Events;
-using Newtonsoft.Json;
 
 namespace LyokoAPP_Plugin
 {
@@ -17,7 +16,7 @@ namespace LyokoAPP_Plugin
                 var result = "-1";
                 var webAddr = "https://fcm.googleapis.com/fcm/send";
 
-                var regID  = Main.GetToken();
+                var regId = Main.GetToken();
 
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(webAddr);
                 httpWebRequest.ContentType = "application/json";
@@ -26,32 +25,22 @@ namespace LyokoAPP_Plugin
 
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
-                    var data = new
-                    {
-                        to = regID,
-                        notification = new
-                        {
-                            title = title,
-                            body = body,
-                        },
-                        priority = 10
-                    };
-                    var json = JsonConvert.SerializeObject(data);
+                    string json = "{\"to\": \"" + regId + "\",\"notification\": {\"title\": \"" + title + "\",\"body\": \"" + body + "\"}}";
                     streamWriter.Write(json);
                     streamWriter.Flush();
                 }
 
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException()))
                 {
                     result = streamReader.ReadToEnd();
                 }
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LyokoLogger.Log("LYOKOAPP", ex.ToString());
+                LyokoLogger.Log("LyokoAPP", e.ToString());
                 return "SomethingWrong";
             }
         }
