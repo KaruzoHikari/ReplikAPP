@@ -35,7 +35,7 @@ namespace LyokoAPP_Plugin
             string title = "A tower has been activated!";
             string body = "Tower nº" + tower.Number + " in the " + Main.GetUppercaseNames(tower.Sector.Name) + "!";
             FireBasePush.SendMessage(title, body);
-            //DataPush.SendData(tower);
+            DataPush.SendData(tower);
         }
 
         private static void OnTowerDeactivation(ITower tower)

@@ -31,19 +31,14 @@ namespace LyokoAPP_Plugin
                     using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                     {
                         var sName = Main.GetUppercaseNames(tower.Sector.Name);
-                        var data = new
-                        {
-                            sector = sName,
-                            number = tower.Number.ToString(),
-                            activator = Enum.GetName(typeof(APIActivator), tower.Activator)
-                        };
-                        //var json = JsonConvert.SerializeObject(data);
-                        //streamWriter.Write(json);
+                        string json = "{\"sector\": \"" + sName + "\",\"number\": \"" + tower.Number.ToString() + "\",\"activator\": \"" +
+                                      Enum.GetName(typeof(APIActivator), tower.Activator) + "\"}";
+                        streamWriter.Write(json);
                         streamWriter.Flush();
                     }
 
                     var httpResponse = (HttpWebResponse) httpWebRequest.GetResponse();
-                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException()))
                     {
                         result = streamReader.ReadToEnd();
                     }
