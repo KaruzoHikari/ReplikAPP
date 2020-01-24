@@ -6,7 +6,7 @@ The project contains 2 elements:
 
 ### - ReplikAPP (App)
 This app is designed to get your user token and as a receiver to get the notifications from the computer.
-In the future it could be used to add more interactive parts.
+Inside the app, right now, you can do certain things like checking the history of the towers, but in the future versions you'll be able to interact with a lot more stuff.
 
 ### - ReplikAPP (Plugin)
 This plugin is the one that listens to the events and send the info to the app.
