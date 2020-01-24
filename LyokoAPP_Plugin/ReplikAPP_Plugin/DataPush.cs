@@ -6,7 +6,7 @@ using LyokoAPI.Events;
 using LyokoAPI.VirtualStructures.Interfaces;
 using LyokoAPI.VirtualStructures;
 
-namespace LyokoAPP_Plugin
+namespace ReplikAPP_Plugin
 {
     public static class DataPush
     {
@@ -47,7 +47,7 @@ namespace LyokoAPP_Plugin
                 }
                 catch (Exception e)
                 {
-                    LyokoLogger.Log("LyokoAPP", e.ToString());
+                    LyokoLogger.Log("ReplikAPP", e.ToString());
                     return "SomethingWrong";
                 }
             });

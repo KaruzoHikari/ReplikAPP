@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using LyokoAPI.Events;
 
-namespace LyokoAPP_Plugin
+namespace ReplikAPP_Plugin
 {
     public class FireBasePush
     {
@@ -45,7 +45,7 @@ namespace LyokoAPP_Plugin
                 }
                 catch (Exception e)
                 {
-                    LyokoLogger.Log("LyokoAPP", e.ToString());
+                    LyokoLogger.Log("ReplikAPP", e.ToString());
                     return "SomethingWrong";
                 }
             });
