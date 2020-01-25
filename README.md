@@ -18,7 +18,7 @@ How to use:
 **[Android](https://play.google.com/store/apps/details?id=com.karuzohikari.lyokoapp)**<br>
 **[iOS](https://apps.apple.com/app/replikapp/id1495977213)**
 
-2. Download the plugin from the [Releases"](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. In IFSCL, you can click the "Open Plugins Folder" icon in Kolossus Launcher, or go to:  
+2. Download the plugin from the [Releases](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. In IFSCL, you can click the "Open Plugins Folder" icon in Kolossus Launcher, or go to:  
 ```\Program Files\CodeLyokoGames\Kolossus Launcher\app\IFSCL\IFSCL_Data\StreamingAssets\LyokoAPI_UserFile~```
 
 3. Start the computer game (in this case, IFSCL), and go to the main menu. The plugin will then be initialize, create a folder in the plugins folder by itself (it'll be called ReplikAPP, in the plugin's location) and disable. Once the folder is there, you can close the game.\
