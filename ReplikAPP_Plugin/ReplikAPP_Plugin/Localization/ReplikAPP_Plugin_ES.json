@@ -1,0 +1,13 @@
+{
+    "sector.ice": "el Hielo",
+    "sector.forest": "el Bosque",
+    "sector.desert": "el Desierto",
+    "sector.mountains": "las Montañas",
+    "sector.sector5": "el Sector 5",
+    "tower.activation.title": "¡Una torre ha sido activada!",
+    "tower.activation.subtitle": "¡Torre nº{0} en {1}!",
+    "tower.deactivation.title": "¡Bien hecho! ¡Torre desactivada!",
+    "tower.deactivation.subtitle": "¡Torre nº{0} en {1}!",
+    "tower.hijack.title": "¿Huh? ¡Una torre ha sido pirateada!",
+    "tower.hijack.subtitle": "¡Torre nº{0} en {1}!"
+}

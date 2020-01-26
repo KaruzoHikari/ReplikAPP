@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using LyokoAPI.Events;
@@ -13,6 +16,8 @@ namespace ReplikAPP_Plugin
         public override string Author { get; } = "KaruzoHikari and Appryl";
         private static string _token = "";
         
+        private static Dictionary<string,string> localization = new Dictionary<string, string>();
+        
         protected override bool OnEnable()
         {
             if (!ReadToken())
@@ -20,6 +25,7 @@ namespace ReplikAPP_Plugin
                 return false;
             }
 
+            createLocalizationDictionary();
             Listener.StartListening();
             return true;
         }
@@ -78,7 +84,7 @@ namespace ReplikAPP_Plugin
                 catch (Exception e)
                 {
                     LyokoLogger.Log(Name,
-                        $"Something went wrong creating the config directory: {e.Message}, check if you have write access to the directory");
+                        $"Something went wrong creating the config directory: {e.ToString()}, check if you have write access to the directory");
                     return false;
                 }
 
@@ -109,7 +115,7 @@ namespace ReplikAPP_Plugin
                 }
                 catch (Exception e)
                 {
-                    LyokoLogger.Log(Name, $"Something went wrong moving the token from LyokoAPP to ReplikAPP's folder. Please remove the LyokoAPP folder manually.': {e.Message}, check if you have write access to the directory");
+                    LyokoLogger.Log(Name, $"Something went wrong moving the token from LyokoAPP to ReplikAPP's folder. Please remove the LyokoAPP folder manually.': {e.ToString()}, check if you have write access to the directory");
                 }
             }
 
@@ -133,6 +139,57 @@ namespace ReplikAPP_Plugin
             }
 
             return char.ToUpperInvariant(name[0]) + name.Substring(1).ToLowerInvariant();
+        }
+
+        private void createLocalizationDictionary()
+        {
+            try
+            {
+                string langCode = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
+                var assembly = Assembly.GetExecutingAssembly();
+                string resourceName = "ReplikAPP_Plugin.Localization.ReplikAPP_Plugin_" + langCode.ToUpperInvariant() + ".json";
+
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string result = reader.ReadToEnd();
+                    Dictionary<string, object> dictionary = JsonParser.ParseJSON(result);
+                    foreach (string key in dictionary.Keys)
+                    {
+                        
+                        localization.Add(cleanString(key), cleanString((string) dictionary[key],true));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LyokoLogger.Log("ReplikAPP",e.ToString());
+            }
+        }
+
+        private string cleanString(string check, bool allowWhiteSpaces = false)
+        {
+            /*char[] arr = check.ToCharArray();
+            if (!allowWhiteSpaces)
+            {
+                arr = Array.FindAll(arr, (c => (char.IsLetterOrDigit(c) || c == '.')));
+            }
+            else
+            {
+                arr = Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '.')));
+            }
+
+            return new string(arr).Trim();*/
+            return check.Trim();
+        }
+
+        public static string localize(string text)
+        {
+            if(localization.Keys.Contains(text))
+            {
+                return localization[text];
+            }
+            return text;
         }
     }
 }

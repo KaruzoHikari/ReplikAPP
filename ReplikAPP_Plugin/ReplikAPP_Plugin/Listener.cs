@@ -1,3 +1,4 @@
+using System;
 using LyokoAPI.Events;
 using LyokoAPI.VirtualStructures;
 using LyokoAPI.VirtualStructures.Interfaces;
@@ -32,24 +33,24 @@ namespace ReplikAPP_Plugin
 
         private static void OnTowerActivation(ITower tower)
         {
-            string title = "A tower has been activated!";
-            string body = "Tower nº" + tower.Number + " in the " + Main.GetUppercaseNames(tower.Sector.Name) + "!";
+            string title = Main.localize("tower.activation.title");
+            string body = String.Format(Main.localize("tower.activation.subtitle"),tower.Number,Main.localize("sector." + tower.Sector.Name.ToLowerInvariant()));
             FireBasePush.SendMessage(title, body);
             DataPush.SendData(tower);
         }
 
         private static void OnTowerDeactivation(ITower tower)
         {
-            string title = "Good job! Tower deactivated!";
-            string body = "Tower nº" + tower.Number + " in the " + Main.GetUppercaseNames(tower.Sector.Name) + ".";
+            string title = Main.localize("tower.deactivation.title");
+            string body = String.Format(Main.localize("tower.deactivation.subtitle"),tower.Number,Main.localize("sector." + tower.Sector.Name.ToLowerInvariant()));
             FireBasePush.SendMessage(title, body);
         }
 
         private static void OnTowerHijack(ITower tower, APIActivator oldActivator, APIActivator newActivator)
         {
-            string title = "Huh? A tower has been hijacked!";
-            string body = "Tower nº" + tower.Number + " in the " + Main.GetUppercaseNames(tower.Sector.Name) + ", from " +
-                          Main.GetUppercaseNames(oldActivator.ToString()) + " to " + Main.GetUppercaseNames(newActivator.ToString()) + "!";
+            string title = Main.localize("tower.hijack.title");
+            string body = String.Format(Main.localize("tower.hijack.subtitle"),tower.Number,Main.localize("sector." + tower.Sector.Name.ToLowerInvariant()),
+                Main.GetUppercaseNames(oldActivator.ToString()),Main.GetUppercaseNames(newActivator.ToString()));
             FireBasePush.SendMessage(title, body);
         }
     }
