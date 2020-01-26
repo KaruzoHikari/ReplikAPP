@@ -15,9 +15,9 @@ namespace ReplikAPP_Plugin
         public override string Name { get; } = "ReplikAPP";
         public override string Author { get; } = "KaruzoHikari and Appryl";
         private static string _token = "";
-        
+
         private static Dictionary<string,string> localization = new Dictionary<string, string>();
-        
+
         protected override bool OnEnable()
         {
             if (!ReadToken())
@@ -35,7 +35,7 @@ namespace ReplikAPP_Plugin
             Listener.StopListening();
             return true;
         }
-
+        
         public override void OnGameStart(bool storyMode)
         {
             //nothing
