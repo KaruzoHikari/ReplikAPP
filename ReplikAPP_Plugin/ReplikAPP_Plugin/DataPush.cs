@@ -30,8 +30,8 @@ namespace ReplikAPP_Plugin
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     var sName = Main.GetUppercaseNames(tower.Sector.Name);
-                    string json = "{\"sector\": \"" + sName + "\",\"number\": \"" + tower.Number.ToString() +
-                                  "\",\"activator\": \"" +
+                    string json = "{\"world\": \"" + tower.Sector.World.Name + "\",\"sector\": \"" + sName + "\",\"number\": \"" + 
+                                  tower.Number.ToString() + "\",\"activator\": \"" +
                                   Enum.GetName(typeof(APIActivator), tower.Activator) + "\"}";
                     streamWriter.Write(json);
                     streamWriter.Flush();
