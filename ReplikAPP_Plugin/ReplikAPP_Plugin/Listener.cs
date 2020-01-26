@@ -8,6 +8,7 @@ namespace ReplikAPP_Plugin
     public class Listener
     {
         private static bool _listening;
+        private static string _lan = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
 
         public static void StartListening()
         {
@@ -53,5 +54,36 @@ namespace ReplikAPP_Plugin
                 Main.GetUppercaseNames(oldActivator.ToString()),Main.GetUppercaseNames(newActivator.ToString()));
             FireBasePush.SendMessage(title, body);
         }
+
+        private static string GenMessage(ITower tower, APIActivator oldActivator, APIActivator newActivator, int status)
+        {
+            string title;
+            string body;
+            
+            if (_lan == "FR")
+            {
+                body = "Tour nº" + tower.Number + " dans le territoire " + Main.GetUppercaseNames(tower.Sector.Name) + ".";
+                if (status == 0)
+                {
+                    title = "Une tour a été activée !";
+                } else if (status == 1)
+                {
+                    title = "Bien joué ! La tour a été desactivée !";
+                } else if (status == 3)
+                {
+                    title = "Quoi ? Une tour a été piratée !";
+                    body = "Tour nº" + tower.Number + " dans le territoire " + Main.GetUppercaseNames(tower.Sector.Name) + ", de " +
+                           Main.GetUppercaseNames(oldActivator.ToString()) + " to " + Main.GetUppercaseNames(newActivator.ToString()) + "!";
+                }
+                body = "Tour nº" + tower.Number + " dans le territoire " + Main.GetUppercaseNames(tower.Sector.Name) + ".";
+            } else if (_lan == "ES")
+            {
+                
+            } else
+            {
+                
+            }
+            FireBasePush.SendMessage(title, body);
+        };
     }
 }
