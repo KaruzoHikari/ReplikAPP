@@ -2,7 +2,7 @@
     "sector.ice": "la Banquise",
     "sector.forest": "la Forêt",
     "sector.desert": "le Désert",
-    "sector.mountains": "la Montagne",
+    "sector.mountain": "la Montagne",
     "sector.sector5": "le 5ème Territoire",
     "tower.activation.title": "Une tour a été activée !",
     "tower.activation.subtitle": "Tour n°{0} dans {1} !",

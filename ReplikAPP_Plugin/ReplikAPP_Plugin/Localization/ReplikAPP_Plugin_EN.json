@@ -2,7 +2,7 @@
     "sector.ice": "the Ice",
     "sector.forest": "the Forest",
     "sector.desert": "the Desert",
-    "sector.mountains": "the Mountains",
+    "sector.mountain": "the Mountains",
     "sector.sector5": "the Sector 5",
     "tower.activation.title": "A tower has been activated!",
     "tower.activation.subtitle": "Tower nº{0} in {1}!",
