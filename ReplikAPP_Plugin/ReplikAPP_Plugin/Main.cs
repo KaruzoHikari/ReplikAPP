@@ -46,6 +46,16 @@ namespace ReplikAPP_Plugin
             //nothing again Jack why do you make us fill these methods
         }
 
+        public override void OnInterfaceExit()
+        {
+            //nothing
+        }
+        
+        public override void OnInterfaceEnter()
+        {
+            //nothing
+        }
+
         private bool ReadToken()
         {
             if (!CheckLegacyToken())
