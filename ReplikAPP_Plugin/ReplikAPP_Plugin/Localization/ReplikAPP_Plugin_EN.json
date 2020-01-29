@@ -3,11 +3,13 @@
     "sector.forest": "the Forest",
     "sector.desert": "the Desert",
     "sector.mountains": "the Mountains",
-    "sector.sector5": "the Sector 5",
+    "sector.carthage": "the Sector 5",
     "tower.activation.title": "A tower has been activated!",
     "tower.activation.subtitle": "Tower nº{0} in {1}!",
     "tower.deactivation.title": "Good job! Tower deactivated!",
     "tower.deactivation.subtitle": "Tower nº{0} in {1}!",
     "tower.hijack.title": "Huh? A tower has been hijacked!",
-    "tower.hijack.subtitle": "Tower nº{0} in {1}, from {2} to {3}!"
+    "tower.hijack.subtitle": "Tower nº{0} in {1}, from {2} to {3}!",
+    "versionCheck.title": "A new version is available!",
+    "versionCheck.body": "Please download the plugin update on GitHub"
 }
