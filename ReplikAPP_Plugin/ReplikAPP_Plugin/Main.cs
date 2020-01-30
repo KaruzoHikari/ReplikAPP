@@ -56,6 +56,11 @@ namespace ReplikAPP_Plugin
         {
             string directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName + @"\ReplikAPP";
             string fileDirectory = directory + @"\UserPin.txt";
+            string oldDirectory = directory + @"\UserToken.txt";
+            if (Directory.Exists(directory) && File.Exists(oldDirectory))
+            {
+                File.Delete(oldDirectory);
+            }
             if (Directory.Exists(directory) && File.Exists(fileDirectory))
             {
                 try
