@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using LyokoAPI.Events;
 using LyokoAPI.Plugin;
+using LyokoAPI.VirtualStructures;
+using YamlDotNet.Core.Tokens;
 
 namespace ReplikAPP_Plugin
 {
@@ -14,13 +18,15 @@ namespace ReplikAPP_Plugin
     {
         public override string Name { get; } = "ReplikAPP";
         public override string Author { get; } = "KaruzoHikari and Appryl";
+        public string Version = "1.0";
+        private static string _pin = "";
         private static string _token = "";
 
         private static Dictionary<string,string> localization = new Dictionary<string, string>();
 
         protected override bool OnEnable()
         {
-            if (!ReadToken())
+            if (!ReadPin())
             {
                 return false;
             }
@@ -46,82 +52,83 @@ namespace ReplikAPP_Plugin
             //nothing again Jack why do you make us fill these methods
         }
 
-        private bool ReadToken()
+        private bool ReadPin()
         {
-            if (!CheckLegacyToken())
+            string directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName + @"\ReplikAPP";
+            string fileDirectory = directory + @"\UserPin.txt";
+            string oldDirectory = directory + @"\UserToken.txt";
+            if (Directory.Exists(directory) && File.Exists(oldDirectory))
             {
-                string directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName + @"\ReplikAPP";
-                string fileDirectory = directory + @"\UserToken.txt";
-                if (Directory.Exists(directory) && File.Exists(fileDirectory))
-                {
-                    try
-                    {
-                        string token = File.ReadAllText(fileDirectory, Encoding.UTF8);
-                        if (token.Length > 0)
-                        {
-                            _token = token;
-                            LyokoLogger.Log(Name, "User token successfully loaded!");
-                            return true;
-                        }
-
-                        LyokoLogger.Log(Name, @"Please input the token given by ReplikAPP in \ReplikAPP\UserToken.txt");
-                        LyokoLogger.Log(Name, "The plugin will disable now, restart the game once the token is in the file.");
-                        return false;
-                    }
-                    catch (Exception e)
-                    {
-                        LyokoLogger.Log(Name,
-                            "Something went wrong when reading the token! Please check that only your token is inside UserToken.txt");
-                        return false;
-                    }
-                }
-
-                try
-                {
-                    Directory.CreateDirectory(directory);
-                    File.Create(fileDirectory);
-                }
-                catch (Exception e)
-                {
-                    LyokoLogger.Log(Name,
-                        $"Something went wrong creating the config directory: {e.ToString()}, check if you have write access to the directory");
-                    return false;
-                }
-
-                LyokoLogger.Log(Name,
-                    @"Please input the token given by ReplikAPP in UserToken.txt (in ReplikAPP's folder)");
-                LyokoLogger.Log(Name, "The plugin will disable now, restart the game once the token is in the file.");
-                return false;
+                File.Delete(oldDirectory);
             }
-            return true;
-        }
-
-        private bool CheckLegacyToken()
-        {
-            string directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName + @"\LyokoAPP";
-            string fileDirectory = directory + @"\UserToken.txt";
             if (Directory.Exists(directory) && File.Exists(fileDirectory))
             {
                 try
                 {
-                    string newDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName + @"\ReplikAPP";
-                    string newFileDirectory = newDirectory + @"\UserToken.txt";
+                    string pin = File.ReadAllText(fileDirectory, Encoding.UTF8);
+                    if (pin.Length > 0 && pin.Length < 7)
+                    {
+                        _pin = pin.Trim();
+                        LyokoLogger.Log(Name, "User pin successfully loaded!");
+                        checkVersion();
+                        _token = FetchToken();
+                        return true;
+                    }
 
-                    Directory.CreateDirectory(newDirectory);
-                    File.Move(fileDirectory, newFileDirectory);
-                    Directory.Delete(directory, true);
-                    LyokoLogger.Log(Name, "The token was successfully ported over from the LyokoAPP folder!");
-                    return true;
+                    LyokoLogger.Log(Name, @"Please input the pin given by ReplikAPP in \ReplikAPP\UserPin.txt");
+                    LyokoLogger.Log(Name, "The plugin will disable now, restart the game once the pin is in the file.");
+                    return false;
                 }
                 catch (Exception e)
                 {
-                    LyokoLogger.Log(Name, $"Something went wrong moving the token from LyokoAPP to ReplikAPP's folder. Please remove the LyokoAPP folder manually.': {e.ToString()}, check if you have write access to the directory");
+                    LyokoLogger.Log(Name,
+                        "Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt");
+                    return false;
                 }
             }
 
+            try
+            {
+                Directory.CreateDirectory(directory);
+                File.Create(fileDirectory);
+            }
+            catch (Exception e)
+            {
+                LyokoLogger.Log(Name,
+                    $"Something went wrong creating the config directory: {e.ToString()}, check if you have write access to the directory");
+                return false;
+            }
+
+            LyokoLogger.Log(Name,
+                @"Please input the pin given by ReplikAPP in UserPin.txt (in ReplikAPP's folder)");
+            LyokoLogger.Log(Name, "The plugin will disable now, restart the game once the pin is in the file.");
             return false;
         }
 
+        public static string GetPin()
+        {
+            return _pin;
+        }
+
+        public static string FetchToken()
+        {
+            string dataKey = ServerKey.GetDataKey();
+            string token = "void";
+            var webAddr = ("https://lyokoapp.firebaseio.com/-USERS/" + _pin + "/-TOKEN.json?auth=" + dataKey);
+            using (var webClient = new System.Net.WebClient()) {
+                
+                var result = webClient.DownloadString(webAddr);
+                Dictionary<string, object> dictionary = JsonParser.ParseJSON(result);
+                foreach (string key in dictionary.Keys)
+                {
+                    token = key;
+                    Console.WriteLine(token);
+                }
+
+            }
+            return token;
+        }
+        
         public static string GetToken()
         {
             return _token;
@@ -190,6 +197,22 @@ namespace ReplikAPP_Plugin
                 return localization[text];
             }
             return text;
+        }
+        
+        private void checkVersion()
+        {
+            string dataKey = ServerKey.GetDataKey();
+            
+            var webAddr = ("https://lyokoapp.firebaseio.com/-VERSION.json?auth=" + dataKey);
+            using (var webClient = new System.Net.WebClient()) {
+                
+                var result = webClient.DownloadString(webAddr);
+                if (result != "\"" + Version + "\"")
+                {
+                    FireBasePush.SendMessage(localize("versionCheck.title"), localize("versionCheck.body"));
+                }
+                
+            }
         }
     }
 }

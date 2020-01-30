@@ -21,7 +21,7 @@ namespace ReplikAPP_Plugin
                 var time = DateTime.Now;
                 var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 int unixDateTime = (int) (time.ToUniversalTime() - epoch).TotalSeconds;
-                var webAddr = ("https://lyokoapp.firebaseio.com/" + Main.GetToken() + "/" + unixDateTime +
+                var webAddr = ("https://lyokoapp.firebaseio.com/-USERS/" + Main.GetPin() + "/-HISTORY/" + unixDateTime +
                                ".json?auth=" + dataKey);
 
                 var httpWebRequest = (HttpWebRequest) WebRequest.Create(webAddr);
