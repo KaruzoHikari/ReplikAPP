@@ -12,6 +12,7 @@ namespace ReplikAPP_Plugin
 {
     public class Main : LyokoAPIPlugin
     {
+
         public override string Name { get; } = "ReplikAPP";
         public override string Author { get; } = "KaruzoHikari and Appryl";
         private static string _token = "";
@@ -44,6 +45,16 @@ namespace ReplikAPP_Plugin
         public override void OnGameEnd(bool failed)
         {
             //nothing again Jack why do you make us fill these methods
+        }
+
+        public override void OnInterfaceExit()
+        {
+            //nothing
+        }
+        
+        public override void OnInterfaceEnter()
+        {
+            //nothing
         }
 
         private bool ReadToken()
