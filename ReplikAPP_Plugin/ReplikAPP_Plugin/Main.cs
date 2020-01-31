@@ -69,10 +69,10 @@ namespace ReplikAPP_Plugin
                 try
                 {
                     //READ PIN
-                    string pin = File.ReadAllText(fileDirectory, Encoding.UTF8);
+                    string pin = File.ReadAllText(fileDirectory, Encoding.UTF8).Trim();
                     if (pin.Length > 0 && pin.Length < 7)
                     {
-                        _pin = pin.Trim();
+                        _pin = pin;
                         LyokoLogger.Log(Name, "User pin successfully loaded!");
                         checkVersion();
                         _token = FetchToken();
