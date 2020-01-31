@@ -33,10 +33,18 @@ namespace ReplikAPP_Plugin
 
         private static void OnTowerActivation(ITower tower)
         {
-            string title = Main.localize("tower.activation.title");
-            string body = String.Format(Main.localize("tower.activation.subtitle"),tower.Number,Main.localize("sector." + tower.Sector.Name.ToLowerInvariant()));
-            FireBasePush.SendMessage(title, body);
-            DataPush.SendData(tower);
+            try
+            {
+                string title = Main.localize("tower.activation.title");
+                string body = String.Format(Main.localize("tower.activation.subtitle"),tower.Number,Main.localize("sector." + tower.Sector.Name.ToLowerInvariant()));
+                FireBasePush.SendMessage(title, body);
+                DataPush.SendData(tower);
+            }
+            catch (Exception e)
+            {
+                LyokoLogger.Log("ReplikAPP",e.Message + e.StackTrace);
+            }
+           
         }
 
         private static void OnTowerDeactivation(ITower tower)
