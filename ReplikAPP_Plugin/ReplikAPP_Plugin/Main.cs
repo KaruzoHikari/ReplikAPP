@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,6 +13,7 @@ using LyokoAPI.Events;
 using LyokoAPI.Plugin;
 using LyokoAPI.VirtualStructures;
 using YamlDotNet.Core.Tokens;
+
 
 namespace ReplikAPP_Plugin
 {
@@ -65,6 +68,7 @@ namespace ReplikAPP_Plugin
             {
                 try
                 {
+                    //READ PIN
                     string pin = File.ReadAllText(fileDirectory, Encoding.UTF8);
                     if (pin.Length > 0 && pin.Length < 7)
                     {
@@ -74,15 +78,74 @@ namespace ReplikAPP_Plugin
                         _token = FetchToken();
                         return true;
                     }
+                    //IF IT DOESN'T EXIST, ASK FOR IT
+                    string batFileName = Path.GetTempPath() + @"\pin.bat";
+                    string programName = Assembly.GetExecutingAssembly().GetName().Name;
 
-                    LyokoLogger.Log(Name, @"Please input the pin given by ReplikAPP in \ReplikAPP\UserPin.txt");
-                    LyokoLogger.Log(Name, "The plugin will disable now, restart the game once the pin is in the file.");
-                    return false;
+                    using (Stream input = Assembly.GetExecutingAssembly().GetManifestResourceStream(programName + ".pin.bat"))
+                    {
+                        using (TextReader tr = new StreamReader(input))
+                        {
+                            File.WriteAllText(batFileName, tr.ReadToEnd());
+                        }
+                    }
+
+                    Process proc = new Process();
+                    proc.EnableRaisingEvents = true;
+                    proc.StartInfo.CreateNoWindow = false;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.FileName = "cmd.exe";
+                    proc.StartInfo.Arguments = "/c " + batFileName;
+                    
+                    proc.Start();
+                    proc.Exited += (sender, e) =>
+                    {
+                        try
+                        {
+                            LyokoLogger.Log(Name, "PIN window closed!");
+                            string path = Path.GetTempPath() + @"\UserPin.txt";
+                            if (File.Exists(path))
+                            {
+                                if (File.Exists(fileDirectory))
+                                {
+                                    File.Delete(fileDirectory);
+                                }
+                                File.Move(path, fileDirectory);
+                                string newPin = File.ReadAllText(fileDirectory, Encoding.UTF8).Trim();
+                                if (newPin.Length > 0 && newPin.Length < 7)
+                                {
+                                    _pin = newPin;
+                                    LyokoLogger.Log(Name, "User pin successfully loaded!");
+                                    checkVersion();
+                                    _token = FetchToken();
+                                }
+                                else
+                                {
+                                    LyokoLogger.Log(Name, "The PIN is empty!");
+                                }
+
+                                File.Delete(batFileName);
+                            }
+                            else
+                            {
+                                LyokoLogger.Log(Name,
+                                    @"Please input the pin given by ReplikAPP in \ReplikAPP\UserPin.txt");
+                                LyokoLogger.Log(Name,
+                                    "The plugin will disable now, restart the game once the pin is in the file.");
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            LyokoLogger.Log(Name,
+                                $"Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt:\n {exception.ToString()}");
+                        }
+                    };
+                    return true;
                 }
                 catch (Exception e)
                 {
                     LyokoLogger.Log(Name,
-                        "Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt");
+                        $"Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt:\n {e.ToString()}");
                     return false;
                 }
             }
@@ -95,14 +158,13 @@ namespace ReplikAPP_Plugin
             catch (Exception e)
             {
                 LyokoLogger.Log(Name,
-                    $"Something went wrong creating the config directory: {e.ToString()}, check if you have write access to the directory");
+                    $"Something went wrong creating the config directory:\n {e.ToString()}, check if you have write access to the directory");
                 return false;
             }
 
             LyokoLogger.Log(Name,
                 @"Please input the pin given by ReplikAPP in UserPin.txt (in ReplikAPP's folder)");
-            LyokoLogger.Log(Name, "The plugin will disable now, restart the game once the pin is in the file.");
-            return false;
+            return true;
         }
 
         public static string GetPin()
@@ -176,17 +238,6 @@ namespace ReplikAPP_Plugin
 
         private string cleanString(string check, bool allowWhiteSpaces = false)
         {
-            /*char[] arr = check.ToCharArray();
-            if (!allowWhiteSpaces)
-            {
-                arr = Array.FindAll(arr, (c => (char.IsLetterOrDigit(c) || c == '.')));
-            }
-            else
-            {
-                arr = Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '.')));
-            }
-
-            return new string(arr).Trim();*/
             return check.Trim();
         }
 
@@ -213,6 +264,19 @@ namespace ReplikAPP_Plugin
                 }
                 
             }
+        }
+
+        private bool isAllNumbers(string check)
+        {
+            foreach (char c in check)
+            {
+                if (!Char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
