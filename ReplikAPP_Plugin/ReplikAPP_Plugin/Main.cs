@@ -35,7 +35,6 @@ namespace ReplikAPP_Plugin
             }
 
             createLocalizationDictionary();
-            Listener.StartListening();
             return true;
         }
 
@@ -76,8 +75,10 @@ namespace ReplikAPP_Plugin
                         LyokoLogger.Log(Name, "User pin successfully loaded!");
                         checkVersion();
                         _token = FetchToken();
+                        Listener.StartListening();
                         return true;
                     }
+                    
                     //IF IT DOESN'T EXIST, ASK FOR IT
                     string batFileName = Path.GetTempPath() + @"\pin.bat";
                     string programName = Assembly.GetExecutingAssembly().GetName().Name;
@@ -118,6 +119,7 @@ namespace ReplikAPP_Plugin
                                     LyokoLogger.Log(Name, "User pin successfully loaded!");
                                     checkVersion();
                                     _token = FetchToken();
+                                    Listener.StartListening();
                                 }
                                 else
                                 {
@@ -226,7 +228,7 @@ namespace ReplikAPP_Plugin
                     foreach (string key in dictionary.Keys)
                     {
                         
-                        localization.Add(cleanString(key), cleanString((string) dictionary[key],true));
+                        localization.Add(cleanString(key), cleanString((string) dictionary[key]));
                     }
                 }
             }
@@ -236,7 +238,7 @@ namespace ReplikAPP_Plugin
             }
         }
 
-        private string cleanString(string check, bool allowWhiteSpaces = false)
+        private string cleanString(string check)
         {
             return check.Trim();
         }
@@ -252,31 +254,29 @@ namespace ReplikAPP_Plugin
         
         private void checkVersion()
         {
-            string dataKey = ServerKey.GetDataKey();
-            
-            var webAddr = ("https://lyokoapp.firebaseio.com/-VERSION.json?auth=" + dataKey);
-            using (var webClient = new System.Net.WebClient()) {
-                
-                var result = webClient.DownloadString(webAddr);
-                if (result != "\"" + Version + "\"")
-                {
-                    FireBasePush.SendMessage(localize("versionCheck.title"), localize("versionCheck.body"));
-                }
-                
-            }
-        }
-
-        private bool isAllNumbers(string check)
-        {
-            foreach (char c in check)
+            WebClient wc = new WebClient();
+            ServicePointManager.ServerCertificateValidationCallback += (send, certificate, chain, sslPolicyErrors) => true;
+            wc.DownloadStringCompleted += delegate(object sender, DownloadStringCompletedEventArgs e)
             {
-                if (!Char.IsDigit(c))
+                if(e.Error == null && !e.Cancelled)
                 {
-                    return false;
+                    if (e.Result != "\"" + Version + "\"")
+                    {
+                        FireBasePush.SendMessage(localize("versionCheck.title"), localize("versionCheck.subtitle"));
+                        LyokoLogger.Log(Name,"The plugin isn't updated!");
+                    }
+                    else
+                    {
+                        LyokoLogger.Log(Name,"The plugin is updated!");   
+                    }
                 }
-            }
-
-            return true;
+                else
+                {
+                    LyokoLogger.Log(Name,"An error has occured while checking the version!\n" + e.Error.Message + "\n" + e.Error.StackTrace);
+                }
+            };
+            string dataKey = ServerKey.GetDataKey();
+            wc.DownloadStringAsync(new Uri("https://lyokoapp.firebaseio.com/-VERSION.json?auth=" + dataKey));
         }
     }
 }

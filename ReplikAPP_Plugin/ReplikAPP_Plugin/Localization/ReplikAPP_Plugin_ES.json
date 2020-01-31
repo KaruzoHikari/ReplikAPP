@@ -3,13 +3,13 @@
     "sector.forest": "el Bosque",
     "sector.desert": "el Desierto",
     "sector.mountains": "las Montañas",
-    "sector.carthage": "el Sector 5",
+    "sector.sector5": "el Sector 5",
     "tower.activation.title": "¡Una torre ha sido activada!",
     "tower.activation.subtitle": "¡Torre nº{0} en {1}!",
     "tower.deactivation.title": "¡Bien hecho! ¡Torre desactivada!",
     "tower.deactivation.subtitle": "¡Torre nº{0} en {1}!",
     "tower.hijack.title": "¿Huh? ¡Una torre ha sido pirateada!",
     "tower.hijack.subtitle": "¡Torre nº{0} en {1}!",
-    "versionCheck.title": "A new version is available!",
-    "versionCheck.body": "Please download the plugin update on GitHub"
+    "versionCheck.title": "¡Una nueva versión está disponible!",
+    "versionCheck.subtitle": "Por favor, descarga la actualización del plugin en GitHub."
 }
