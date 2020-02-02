@@ -2,7 +2,7 @@
     "sector.ice": "el Hielo",
     "sector.forest": "el Bosque",
     "sector.desert": "el Desierto",
-    "sector.mountains": "las Montañas",
+    "sector.mountain": "las Montañas",
     "sector.sector5": "el Sector 5",
     "tower.activation.title": "¡Una torre ha sido activada!",
     "tower.activation.subtitle": "¡Torre nº{0} en {1}!",

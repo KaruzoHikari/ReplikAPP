@@ -59,100 +59,119 @@ namespace ReplikAPP_Plugin
             string directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName + @"\ReplikAPP";
             string fileDirectory = directory + @"\UserPin.txt";
             string oldDirectory = directory + @"\UserToken.txt";
-            if (Directory.Exists(directory) && File.Exists(oldDirectory))
+            if (File.Exists(oldDirectory))
             {
                 File.Delete(oldDirectory);
             }
-            if (Directory.Exists(directory) && File.Exists(fileDirectory))
+
+            try
             {
-                try
+                if (!Directory.Exists(directory))
                 {
-                    //READ PIN
-                    string pin = File.ReadAllText(fileDirectory, Encoding.UTF8).Trim();
-                    if (pin.Length > 0 && pin.Length < 7)
-                    {
-                        _pin = pin;
-                        LyokoLogger.Log(Name, "User pin successfully loaded!");
-                        checkVersion();
-                        _token = FetchToken();
-                        Listener.StartListening();
-                        return true;
-                    }
-                    
-                    //IF IT DOESN'T EXIST, ASK FOR IT
-                    string batFileName = Path.GetTempPath() + @"\pin.bat";
-                    string programName = Assembly.GetExecutingAssembly().GetName().Name;
-
-                    using (Stream input = Assembly.GetExecutingAssembly().GetManifestResourceStream(programName + ".pin.bat"))
-                    {
-                        using (TextReader tr = new StreamReader(input))
-                        {
-                            File.WriteAllText(batFileName, tr.ReadToEnd());
-                        }
-                    }
-
-                    Process proc = new Process();
-                    proc.EnableRaisingEvents = true;
-                    proc.StartInfo.CreateNoWindow = false;
-                    proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.FileName = "cmd.exe";
-                    proc.StartInfo.Arguments = "/c " + batFileName;
-                    
-                    proc.Start();
-                    proc.Exited += (sender, e) =>
-                    {
-                        try
-                        {
-                            LyokoLogger.Log(Name, "PIN window closed!");
-                            string path = Path.GetTempPath() + @"\UserPin.txt";
-                            if (File.Exists(path))
-                            {
-                                if (File.Exists(fileDirectory))
-                                {
-                                    File.Delete(fileDirectory);
-                                }
-                                File.Move(path, fileDirectory);
-                                string newPin = File.ReadAllText(fileDirectory, Encoding.UTF8).Trim();
-                                if (newPin.Length > 0 && newPin.Length < 7)
-                                {
-                                    _pin = newPin;
-                                    LyokoLogger.Log(Name, "User pin successfully loaded!");
-                                    checkVersion();
-                                    _token = FetchToken();
-                                    Listener.StartListening();
-                                }
-                                else
-                                {
-                                    LyokoLogger.Log(Name, "The PIN is empty!");
-                                }
-
-                                File.Delete(batFileName);
-                            }
-                            else
-                            {
-                                LyokoLogger.Log(Name,
-                                    @"Please input the pin given by ReplikAPP in \ReplikAPP\UserPin.txt");
-                                LyokoLogger.Log(Name,
-                                    "The plugin will disable now, restart the game once the pin is in the file.");
-                            }
-                        }
-                        catch (Exception exception)
-                        {
-                            LyokoLogger.Log(Name,
-                                $"Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt:\n {exception.ToString()}");
-                        }
-                    };
-                    return true;
+                    Directory.CreateDirectory(directory);
                 }
-                catch (Exception e)
-                {
-                    LyokoLogger.Log(Name,
-                        $"Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt:\n {e.ToString()}");
-                    return false;
-                }
+            } catch (Exception e)
+            {
+                LyokoLogger.Log(Name,
+                    $"Something went wrong creating the config directory:\n {e.ToString()}, check if you have write access to the directory");
+                return false;
             }
 
             try
+            {
+                if (!File.Exists(fileDirectory))
+                {
+                    FileStream fs = new FileStream(fileDirectory, FileMode.Create);
+                    fs.Dispose();
+                }
+                string pin = File.ReadAllText(fileDirectory, Encoding.UTF8).Trim();
+                if (pin.Length > 0 && pin.Length < 7)
+                {
+                    _pin = pin;
+                    LyokoLogger.Log(Name, "User pin successfully loaded!");
+                    checkVersion();
+                    _token = FetchToken();
+                    Listener.StartListening();
+                    return true;
+                }
+
+                //IF IT DOESN'T EXIST, ASK FOR IT
+                string batFileName = Path.GetTempPath() + @"\pin.bat";
+                string programName = Assembly.GetExecutingAssembly().GetName().Name;
+
+                using (Stream input = Assembly.GetExecutingAssembly()
+                    .GetManifestResourceStream(programName + ".pin.bat"))
+                {
+                    using (TextReader tr = new StreamReader(input))
+                    {
+                        File.WriteAllText(batFileName, tr.ReadToEnd());
+                    }
+                }
+
+                Process proc = new Process();
+                proc.EnableRaisingEvents = true;
+                proc.StartInfo.CreateNoWindow = false;
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.FileName = "cmd.exe";
+                proc.StartInfo.Arguments = "/c " + batFileName;
+
+                proc.Start();
+                proc.Exited += (sender, e) =>
+                {
+                    try
+                    {
+                        LyokoLogger.Log(Name, "PIN window closed!");
+                        string path = Path.GetTempPath() + @"\UserPin.txt";
+                        if (File.Exists(path))
+                        {
+                            if (File.Exists(fileDirectory))
+                            {
+                                File.Delete(fileDirectory);
+                            }
+
+                            File.Move(path, fileDirectory);
+                            string newPin = File.ReadAllText(fileDirectory, Encoding.UTF8).Trim();
+                            if (newPin.Length > 0 && newPin.Length < 7)
+                            {
+                                _pin = newPin;
+                                LyokoLogger.Log(Name, "User pin successfully loaded!");
+                                checkVersion();
+                                _token = FetchToken();
+                                Listener.StartListening();
+                            }
+                            else
+                            {
+                                LyokoLogger.Log(Name, "The PIN is empty!");
+                            }
+
+                            File.Delete(batFileName);
+                        }
+                        else
+                        {
+                            LyokoLogger.Log(Name,
+                                @"Please input the pin given by ReplikAPP in \ReplikAPP\UserPin.txt");
+                            LyokoLogger.Log(Name,
+                                "The plugin will disable now, restart the game once the pin is in the file.");
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        LyokoLogger.Log(Name,
+                            $"Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt:\n {exception.ToString()}");
+                    }
+                };
+                return true;
+            }
+            catch (Exception e)
+            {
+                LyokoLogger.Log(Name,
+                    $"Something went wrong when reading the pin! Please check that only your pin is inside UserPin.txt:\n {e.ToString()}");
+                LyokoLogger.Log(Name,
+                    @"Please input the pin given by ReplikAPP in UserPin.txt (in ReplikAPP's folder)");
+                return false;
+            }
+
+            /*try
             {
                 Directory.CreateDirectory(directory);
                 File.Create(fileDirectory);
@@ -162,11 +181,7 @@ namespace ReplikAPP_Plugin
                 LyokoLogger.Log(Name,
                     $"Something went wrong creating the config directory:\n {e.ToString()}, check if you have write access to the directory");
                 return false;
-            }
-
-            LyokoLogger.Log(Name,
-                @"Please input the pin given by ReplikAPP in UserPin.txt (in ReplikAPP's folder)");
-            return true;
+            }*/
         }
 
         public static string GetPin()
