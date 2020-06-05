@@ -18,16 +18,15 @@ How to use:
 **[Android](https://play.google.com/store/apps/details?id=com.karuzohikari.lyokoapp)**<br>
 **[iOS](https://apps.apple.com/app/replikapp/id1495977213)**
 
-2. Download the plugin from the [Releases](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. In IFSCL, you can click the "Open Plugins Folder" icon in Kolossus Launcher, or go to:  
-```\Program Files\CodeLyokoGames\Kolossus Launcher\app\IFSCL\IFSCL_Data\StreamingAssets\LyokoAPI_UserFile~```
+2. Download the plugin from the [Releases](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. In IFSCL, you can click the "Open Plugins Folder" icon in the Kolossus Launcher, or, in Windows, go to:
+```%USERPROFILE%\Documents\CodeLyokoGames\IFSCLxxx\LyokoAPI_UserFile```
+(where ```%USERPROFILE%``` can be replaced by the path to your user folder (```[Main drive]:\Users\[your user name]```), although it's not necessary, and ```IFSCLxxx``` must be changed by the version number of IFSCL you will install the plugin to, for example ```IFSCL404```)
 
-3. Start the computer game (in this case, IFSCL), and go to the main menu. The plugin will then be initialize, create a folder in the plugins folder by itself (it'll be called ReplikAPP, in the plugin's location) and disable. Once the folder is there, you can close the game.\
-*(Note: If you're sure that the plugin is in the right location, but no folder is created, run IFSCL as Administrator)*.
+3. Start the computer game (in this case, IFSCL), and go to the main menu. The plugin will then be initialized and display a window asking for your PIN.\
+*(Note: If you're sure that the plugin is in the right location, but the window doesn't appear, run IFSCL as Administrator)*.
 
-4. In your phone, open the app and you'll automatically receive a token. This token will only change if you uninstall the app; updating or restarting the app won't change it. ***Keep in mind that with this token you'll be able to send notifications to yourself, but other people would be able to do it too. Do not share it around.***
+4. In your phone, open the app and touch the "Obtain PIN" button. This PIN will only change if you uninstall the app; updating or restarting the app won't change it. ***Keep in mind that with this PIN you'll be able to send notifications to yourself, but other people would be able to do it too. Do not share it around.***
 
-5. Click the "Copy token to clipboard" button and send the content of your clipboard to your computer. You can use whatever method you want, though pasting in the body of an email (by holding and clicking "Paste") and emailing it to yourself is fairly easy.
+5. Copy the PIN provided by your pohone to the window on your computer. You can copy it manually or send it to your computer with the method you want. The pin is composed of a few numbers only, so the first option is probably the best.
 
-6. In your computer, go to the plugins folder, enter the ReplikAPP folder and open the UserToken.txt file. Paste in there the token you just got from your phone, nothing else (Make sure you don't hit "Enter" or the spacebar by mistake). Save it and close it.
-
-7. Open the computer game again. *TADA*, you're done. You should be able to get notifications in your phone now.
+6. Hit enter on your computer and *TADA*, you're done. You should be able to get notifications in your phone now.
