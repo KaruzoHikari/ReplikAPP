@@ -27,6 +27,6 @@ How to use:
 
 4. In your phone, open the app and touch the "Obtain PIN" button. This PIN will only change if you uninstall the app; updating or restarting the app won't change it. ***Keep in mind that with this PIN you'll be able to send notifications to yourself, but other people would be able to do it too. Do not share it around.***
 
-5. Copy the PIN provided by your pohone to the window on your computer. You can copy it manually or send it to your computer with the method you want. The pin is composed of a few numbers only, so the first option is probably the best.
+5. Copy the PIN provided by your phone to the window on your computer. You can copy it manually or send it to your computer with the method you want. The pin is composed of a few numbers only, so the first option is probably the best.
 
 6. Hit enter on your computer and *TADA*, you're done. You should be able to get notifications in your phone now.
