@@ -26,24 +26,23 @@ namespace ReplikAPP_Plugin
             }
 
             createLocalizationDictionary();
-            Listener.StartListening();
             return true;
         }
 
         protected override bool OnDisable()
         {
-            Listener.StopListening();
             return true;
         }
         
         public override void OnGameStart(bool storyMode)
         {
-            //nothing
+            if (!storyMode)
+                Listener.StartListening();
         }
 
         public override void OnGameEnd(bool failed)
         {
-            //nothing again Jack why do you make us fill these methods
+            Listener.StopListening();
         }
 
         private bool ReadToken()
