@@ -18,9 +18,10 @@ How to use:
 **[Android](https://play.google.com/store/apps/details?id=com.karuzohikari.lyokoapp)**<br>
 **~~[iOS](https://apps.apple.com/app/replikapp/id1495977213)~~ *(Currently unavailable)***
 
-2. Download the plugin from the [Releases](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. In IFSCL, you can click the "Open Plugins Folder" icon in the Kolossus Launcher, or, in Windows, go to:
+2. Download the plugin from the [Releases](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. The easiest way to access this folder, in IFSCL, is clicking the "Open Plugins Folder" icon in the Kolossus Launcher.<br>
+However, you can also find it by navigating to this path in Windows:<br>
 ```%USERPROFILE%\Documents\CodeLyokoGames\IFSCLxxx\LyokoAPI_UserFile```
-(where ```%USERPROFILE%``` can be replaced by the path to your user folder (```[Main drive]:\Users\[your user name]```), although it's not necessary, and ```IFSCLxxx``` must be changed by the version number of IFSCL you will install the plugin to, for example ```IFSCL404```)
+(where ```%USERPROFILE%``` can be replaced by the path to your user folder (```[Main drive]:\Users\[your user name]```), although it's not necessary, and ```IFSCLxxx``` must be changed by the version number of IFSCL you will install the plugin to, for example ```IFSCL41X```)
 
 3. Start the computer game (in this case, IFSCL), and go to the main menu. The plugin will then be initialized and display a window asking for your PIN.\
 *(Note: If you're sure that the plugin is in the right location, but the window doesn't appear, run IFSCL as Administrator)*.
