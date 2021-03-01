@@ -16,7 +16,7 @@ How to use:
 ======
 1. Download the application on your smartphone. You can find it by searching for "ReplikAPP" or through these links:<br>
 **[Android](https://play.google.com/store/apps/details?id=com.karuzohikari.lyokoapp)**<br>
-**[iOS](https://apps.apple.com/app/replikapp/id1495977213)**
+**~~[iOS](https://apps.apple.com/app/replikapp/id1495977213)~~ *(Currently unavailable)***
 
 2. Download the plugin from the [Releases](https://github.com/KaruzoHikari/ReplikAPP/releases/latest) page up here in this GitHub (it's the "ReplikAPP_Plugin.dll" file), and place it under the plugins folder. In IFSCL, you can click the "Open Plugins Folder" icon in the Kolossus Launcher, or, in Windows, go to:
 ```%USERPROFILE%\Documents\CodeLyokoGames\IFSCLxxx\LyokoAPI_UserFile```
